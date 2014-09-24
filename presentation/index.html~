@@ -1,0 +1,858 @@
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Scala Tour</title>
+
+		<meta name="description" content="A presentation about Scala">
+		<meta name="author" content="Pawel Soltysek">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+			<div class="slides">
+            
+                <section>
+                    <img src="assets/scala-logo.png" style="border: 0; box-shadow: none; margin-top: 115px">
+                    <h2>Scala Tour</h2></br></br>
+                    <p><small>Paweł Sołtysek</small></p>
+                </section>
+
+                <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">A Scalable language</h2>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Object&ndash;Oriented</h3>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Functional</h3>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Expressive and concise</h3>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Statically typed</h3>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Runs on the JVM</h3>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">Type system</h2>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 20px;">Everything is an object</h3>
+                        <p><img src="./assets/classhierarchy.png" style="border: 0"/></p>
+                        <small>source: http://scala-lang.org</small>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 245px;">Every operation is a method call</h3>
+                        <br />
+                        <h3>(1).+(2)</h3>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 300px;">Type inference</h3>
+                    </section>
+                    <section>
+                        <pre style="margin-top: 250px;"><code contenteditable class="scala">
+    val anInt: Int = 1
+
+    val aString: String = anInt.toString
+
+    var aC: C = new C()
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 250px;"><code contenteditable class="scala">
+    val anInt = 1
+
+    val aString = anInt.toString
+
+    var aC = new C()
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 290px;"><code contenteditable class="scala">
+    def add(a: Int, b: Int): Int = a + b
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 290px;"><code contenteditable class="scala">
+    def add(a: Int, b: Int) = a + b
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h4 style="margin-top: 120px;">Explicit Type Annotations Are Required When</h4>
+                        <p><img src="./assets/type-infrence-rules-ps.png" style="border: 0"/></p>
+                        <small>source: Programming Scala</small>
+                    </section>
+                    <section>
+                        <h3 style="margin-top: 300px;">Parameterized types</h3>
+                    </section>
+                    <section>
+
+                        <pre style="margin-top: 160px;"><code contenteditable class="scala">
+    abstract class Generator[T] {
+
+        def generate(): T
+    }
+                        </code></pre>
+
+                        <pre><code contenteditable class="scala">
+    class IntGenerator extends Generator[Int] {
+
+        def generate(): Int = 4 //based on http://xkcd.com/221/
+    }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h4 style="margin-top: 150px">Type Bounds</h4>
+
+                        <pre><code class="scala">
+    class A1
+                        </code></pre>
+                        <pre><code class="scala">
+    class A2[T <: A1] //upper bounds
+                        </code></pre>
+                        <pre><code class="scala">
+    class A2[T >: A1] //lower bounds
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h4 style="margin-top: 70px;">Variance</h4>
+                        <pre><code class="scala">
+    class A1
+
+    class A2 extends A1
+                        </code></pre>
+
+                        <pre><code class="scala">
+    //invariant no relation between C1[A1] and C1[A2]
+    class C1[T]
+                        </code></pre>
+                        <pre><code class="scala">
+    //covariant C1[A2] is a subtype of C1[A1]
+    class C1[+T]
+                        </code></pre>
+                        <pre><code class="scala">
+    //contravariant C1[A1] is a subtype of C1[A2]
+    class C1[-T]
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3 style="margin-top: 275px;">Abstract Types</h3>
+                        <h3>Structural Types</h3>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">Traits</h2>
+                    </section>
+
+                    <section>
+                         <pre style="margin-top: 200px;"><code contenteditable class="scala">
+    trait Ordered[A] {
+
+        def compare(that: A): Int
+
+        def <  (that: A): Boolean = (this compare that) <  0
+        def >  (that: A): Boolean = (this compare that) >  0
+        def <= (that: A): Boolean = (this compare that) <= 0
+        def >= (that: A): Boolean = (this compare that) >= 0
+        def compareTo(that: A): Int = compare(that)
+    }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre style="margin-top: 150px;"><code class="scala" contenteditable="">
+    class Person(val age: Int) extends Ordered[Person] {
+        def compare(that: Person): Int = {
+            if(that.age < age) 1
+            else if (that.age > age) -1 else 0
+        }
+    }
+                        </code></pre>
+                        <pre><code class="scala" contenteditable="">
+    val p1 = new Person(12)
+    val p2 = new Person(21)
+    val p3 = new Person(21)
+
+    p1 < p2 //true
+    p2 >= p3 //true
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 50px;">Linearization</h3>
+                         <pre ><code contenteditable class="scala">
+    trait T1 {
+        def a() = println("a.t1")
+    }
+                         </code></pre>
+                         <pre><code contenteditable class="scala">
+    trait T2 {
+        def a() = println("a.t2")
+    }
+                         </code></pre>
+                         <pre><code contenteditable class="scala">
+    class C1 extends T1 with T2 {
+        override def a() = super.a
+    }
+                         </code></pre>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 40px;"><code contenteditable class="scala">
+    trait Loggable {
+
+        private val logger = //...
+
+        def info[T](t: T): Unit = {
+            logger.info(t.toString)
+        }
+    }
+                        </code></pre>
+						<pre><code contenteditable class="scala">
+    class C2 { /* ... */ }
+						</code></pre>
+
+                        <pre><code contenteditable class="scala">
+    class C1 extends C2 with Loggable {
+
+        def c(list: List[Int]): Int = {
+            info(list)
+            //...
+        }
+    }
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">Objects</h2>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 200px;"><code contenteditable class="scala">
+    object Math {
+
+        val PI = 3.1415
+
+        def diskArea(r: Double): Double = PI * r * r
+    }
+                        </code></pre>
+
+                        <pre><code contenteditable class="scala">
+    Math.diskArea(2) //12.566
+                        </code></pre>
+
+                    </section>
+                    
+                    <section>
+                        <pre style="margin-top: 75px;"><code contenteditable class="scala">
+    class C1 { /* ... */ 
+						</code></pre>
+						<pre><code contenteditable class="scala">
+    class C2 { /* ... */ }
+						</code></pre>
+                         <pre><code contenteditable class="scala">
+    trait Transformer[T1, T2] {
+        def transform(t: T1): T2
+    }
+                        </code></pre>
+                        <pre><code contenteditable class="scala">
+    object BogusTransformer extends Transformer[C1, C2] {
+        override def transform(c: C1): C2 = {
+            //...
+        }
+    }
+                         </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 145px;">Companion objects</h3>
+
+                        <pre><code contenteditable class="scala">
+    object C {
+        def staticLike() = //
+    }
+
+    class C {
+        //...
+    }
+                        </code></pre>
+
+                        <pre><code contenteditable class="scala">
+    C.staticLike
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 145px;">Companion objects</h3>
+                        <pre><code contenteditable class="scala">
+    class User private(val name: String)
+
+    object User {
+        def apply(name: String) = new User(name)
+        def unapply(user: User): Option[String] = Some(user.name)
+    }
+                        </code></pre>
+
+                        <pre><code contenteditable class="scala">
+    val user = User("Pawel") //User.apply("Pawel")
+
+    println(user.name) //Pawel
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 50px;">Companion objects</h3>
+                        <pre><code contenteditable class="scala">
+    class Client(connectionString: String, timeout: Int) {
+        //...
+    }
+
+    object Client {
+        val defaultTimeout = //...
+
+        def apply(connectionString: String, timeout: Int): Client =
+            new Client(connectionString, timeout)
+        def apply(connectionString: String): Client =
+            new Client(connectionString, defaultTimeout)
+    }
+                         </code></pre>
+
+                         <pre><code contenteditable class="scala">
+    val client = Client("127.0.0.1:2828", 1000)
+    val anotherClient = Client("127.0.0.1:2828")
+                         </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">Case classes</h2>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 190px;"><code class="scala" contenteditable>
+    case class Customer(firstName: String, lastName: String,
+        address: Address)
+
+    case class Address(street: String, city: String,
+        postalCode: String)
+                        </code></pre>
+
+                        <pre><code contenteditable class="scala">
+    val address = Address("Nieznana", "Katowice", "40-555")
+    val jkowalski = Customer("Jan", "Kowalski", address)
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 300px;">Pattern matching</h3>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 150px;"><code class="scala" contenteditable>
+    sealed trait Tree
+
+    case class Branch(left: Tree, right: Tree, chars: List[Char]) extends Tree
+
+    case class Leaf(char: Char) extends Tree
+                        </code></pre>
+                        <pre><code class="scala">
+    def chars(tree: Tree): List[Char] = tree match {
+        case Branch(_, _, chars) => chars
+        case Leaf(char) => List(char)
+    }
+                        </code></pre>
+                    </section>
+                </section>
+
+               <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">Object-oriented meets functional</h2>
+                    </section>
+                    <section>
+                        <h3 style="margin-top: 310px;">Functions</h3>
+                    </section>
+                    <section>
+                        <pre style="margin-top: 240px;"><code contenteditable class="scala">
+    trait Function1[-T1, +R] extends AnyRef {
+        def apply(v1: T1): R
+
+        //...
+    }
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 170px;"><code contenteditable class="scala">
+    trait Function22[-T1, -T2, -T3, -T4, -T5, -T6, -T7, -T8, -T9, -T10,
+        -T11, -T12, -T13, -T14, -T15, -T16, -T17, -T18, -T19, -T20, -T21,
+        -T22, +R] extends AnyRef {
+
+        def apply(v1: T1, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7,
+            v8: T8, v9: T9, v10: T10, v11: T11, v12: T12, v13: T13,
+            v14: T14, v15: T15, v16: T16, v17: T17, v18: T18, v19: T19,
+            v20: T20, v21: T21, v22: T22): R
+
+        //...
+    }
+                        </code></pre>
+                    </section>
+                    <section>
+
+                        <pre style="margin-top: 215px;"><code contenteditable class="scala">
+    val abs = new Function1[Double, Double] {
+        def apply(a: Double): Double => if (a >= 0) a else -a
+    }
+                        </code></pre>
+
+                        <pre><code contenteditable class="scala">
+    val abs = (a: Double) => if (a >= 0) a else -a
+                        </code></pre>
+                    </section>
+
+                    <section><h3 style="margin-top: 310px;">Higher order functions</h3></section>
+
+                    <section>
+                        <pre style="margin-top: 195px;"><code contenteditable class="scala">
+    val filterPositive = (list: List[Double]) => {
+        for (element <- list; if element > 0) yield element
+    }
+                        </code></pre>
+                        <pre><code contenteditable class="scala">
+    val filterNegative = (list: List[Double]) => {
+        for (element <- list; if element < 0) yield element
+    }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre style="margin-top: 160px;"><code contenteditable class="scala">
+    val filter = (constraint: Double => Boolean, list: List[Double]) => {
+        for (element <- list; if constraint(element)) yield element
+    }
+                        </code></pre>
+                        <pre><code contenteditable class="scala">
+    val isNegative = (a: Double) => a < 0
+    val isPositive = (a: Double) => a > 0
+
+    val foo = List(-2, 11, 23.1, -0.1, -9.1, 3.1)
+    val positives = filter(isPositive, foo)
+    val negatives = filter(isNegative, foo)
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3 style="margin-top: 275px;">Partial functions</h3>
+                        <h3>Currying</h3>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">Implicits</h2>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Implicit conversions</h3>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 70px;">Conversion to an expected type</h3>
+
+                        <pre><code contenteditable class="scala">
+    val d: Double = 3
+                        </code></pre>
+
+                        <pre><code contenteditable class="scala">
+    package scala
+
+    //...
+
+    object Int extends AnyValCompanion {
+
+        //...
+
+        implicit def int2double(x: Int): Double = x.toDouble
+
+        //...
+    }
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 150px;">Conversion to an expected type</h3>
+
+                        <pre><code contenteditable class="scala">
+    class Person(val age: Int)
+
+    object Person {
+
+        implicit def person2Int(p: Person): Int = p.age
+    }
+                        </code></pre>
+
+                        <pre><code>
+    val i: Int = new Person(23)
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 70px;">Conversion of the receiver of selection</h3>
+
+                        <pre><code contenteditable class="scala">
+    val a = "a"
+    val tripled = a * 3  //"aaa"
+                        </code></pre>
+
+                        <pre><code contenteditable class="scala">
+    package scala
+
+    //...
+
+    object Predef extends LowPriorityImplicit {
+
+        //...
+        implicit def augmentString(x: String): StringOps = new StringOps(x)
+
+        implicit def unaugmentString(x: StringOps): String = x.repr
+        //...
+    }
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 100px;">Conversion of the receiver of selection</h3>
+
+                        <pre><code contenteditable class="scala">
+    object IntUtils {
+
+        implicit class IntOps(i: Int) {
+
+            def square = i * i
+        }
+    }
+
+                        </code></pre>
+
+                        <pre><code contenteditable class="scala">
+    import IntUtils._
+
+    val a = 2.square //4
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 170px;">Implicit parameters</h3>
+
+                        <pre><code contenteditable class="scala">
+
+    def times(i: Int)(implicit factor: Int): Int = i * factor
+
+    implicit val factor = 2
+
+    val a = times(2) //4
+    val b = times(2)(3) //6
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Domain Specific Languages</h3>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 130px;"><code class="scala" contenteditable>
+    "A Stack" should "pop values in last-in-first-out order" in {
+        val stack = new Stack[Int]
+        stack.push(1)
+        stack.push(2)
+        stack.pop() should be (2)
+        stack.pop() should be (1)
+    }
+
+    it should "throw NoSuchElementException if an empty stack is popped" in {
+        val emptyStack = new Stack[String]
+        intercept[NoSuchElementException] {
+            emptyStack.pop()
+        }
+    }
+                        </code></pre>
+                        <small>source: http://www.scalatest.org/quick_start</small>
+                    </section>
+
+                </section>
+
+                <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">Collections</h2>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Mutable and Immutable Collections</h3>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 40px;"><code class="scala" contenteditable>
+    val integers = List(1, 2, 35, -12, 0, 12, -7)
+
+    list.map(_ * -1) //List(-1, -2, -35, 12, 0, -12, 7)
+    list.filterNot(_ < 0) //List(1, 2, 35, 0, 12)
+    list.partition(_ < 0) //(List(-12),List(1, 2, 35, 0, 12))
+                        </code></pre>
+
+                        <pre><code class="scala" contenteditable>
+    val names = ArrayBuffer("Piotrek", "Adam", "Krzysiek", "Michal",
+                            "Dawid", "Marek", "Pawel")
+
+    names.groupBy(_.head)
+    /* Map('A' -> List("Adam"), 'M' -> List("Michal", "Marek"),
+           'P' -> List("Piotrek", "Pawel"), 'K' -> List("Krzysiek"),
+           'D' -> List("Dawid")) */
+
+    names.flatMap(_.toLowerCase).groupBy((i: Char) => i).
+        map(i => (i._1, i._2.length))
+    /* Map('e' -> 4, 's' -> 1, 'y' -> 1, 't' -> 1, 'a' -> 6, 'm' -> 3,
+           'i' -> 4, 'l' -> 2, 'p' -> 2, 'c' -> 1, 'h' -> 1, 'r' -> 3,
+           'w' -> 2, 'k' -> 4, 'o' -> 1, 'z' -> 1, 'd' -> 3) */
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Eager and lazy evaluation</h3>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 70px;"><code contenteditable class="scala">
+    val fibs: Stream[BigInt] = BigInt(0) #:: BigInt(1) #:: fibs.zip(
+        fibs.tail).map(n => { println("%d + %d".format(n._1, n._2))
+            n._1 + n._2 })
+                        </code></pre>
+                        <pre><code contenteditable class="scala">
+    fibs take 3 foreach println
+    // 0
+    // 1
+    // 0 + 1
+    // 1
+
+    fibs take 4 foreach println
+    // 0
+    // 1
+    // 1
+    // 1 + 1
+    // 2
+                        </code></pre>
+                        <small>source: http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.Stream</small>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Sequential and parallel evaluation</h3>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 185px;"><code contenteditable class="scala">
+    val list = List(1, 2, 3, 4, 5)
+
+    def someTimeConsumingOperation(input: Int) = {
+
+        Thread.sleep(1000)
+    }
+
+    list.foreach(someTimeConsumingOperation(_))
+
+    list.par.foreach(someTimeConsumingOperation(_))
+                        </code></pre>
+                    </section>
+                </section>
+                
+                <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">Concurrent programming</h2>
+                    </section>
+                    
+                    <section>
+                        <blockquote style="margin-top: 280px;">A programmer had a problem. He thought “I know, I’ll solve it with threads!”. has Now problems. two he</blockquote>
+                    </section>
+
+                    <section>
+                        <h3 style="margin-top: 310px;">Actor system</h3>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 170px;"><code contenteditable class="scala">
+    case class Greeting(who: String)
+
+    class GreetingActor extends Actor with ActorLogging {
+        def receive = {
+            case Greeting(who) => log.info("Hello " + who)
+        }
+    }
+
+    val system = ActorSystem("MySystem")
+    val greeter = system.actorOf(Props[GreetingActor], name = "greeter")
+    greeter ! Greeting("Charlie Parker")
+                        </code></pre>
+                        <small>source: http://akka.io</small>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 270px;"><code class="scala">
+    sealed trait Message
+    case object Ping extends Message
+    case object Pong extends Message
+    case object Start extends Message
+                        </code></pre>
+                    </section>
+
+                   <section>
+                        <pre style="margin-top: 160px;""><code class="scala">
+    class PingActor extends Actor with ActorLogging {
+
+        def receive = {
+            case Start => {
+                log.info("Starting ping pong...")
+                context.actorSelection("../PongActor") ! Ping
+            }
+            case Pong => {
+                log.info("Got Pong, sending Ping...")
+                sender ! Pong
+            }
+        }
+    }
+                        </code></pre>
+                    </section>
+
+                   <section>
+                        <pre style="margin-top: 220px;"><code class="scala">
+    class PongActor extends Actor with ActorLogging {
+
+        def receive = {
+            case Ping => {
+                log.info("Got Ping, sending Pong...")
+                sender ! Ping
+            }
+        }
+    }
+                        </code></pre>
+                    </section>
+
+                   <section>
+                        <pre style="margin-top: 180px;"><code class="scala">
+    object PingPong extends App {
+
+        val system = ActorSystem("PingPong")
+        val ping = system.actorOf(Props[PingActor], "PingActor")
+        val pong = system.actorOf(Props[PongActor], "PongActor")
+
+        ping ! Start
+
+        Thread.sleep(100)
+
+        system.shutdown()
+    }
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2 style="margin-top: 300px;">REPL</h2>
+                    </section>
+
+                    <section>
+                        <pre style="margin-top: 210px;"><code>
+    $ scala
+
+    Welcome to Scala version 2.10.2 (Java HotSpot(TM)
+    Server VM, Java 1.7.0_07).
+    Type in expressions to have them evaluated.
+    Type :help for more information.
+
+    scala>
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+			<p style="margin-top: 220px;"></p>
+                    <ul style="list-style:none">
+                        <li><a href="http://docs.scala-lang.org/">http://docs.scala-lang.org/</a></li>
+			            <li><a href="http://www.artima.com/pins1ed/">http://www.artima.com/pins1ed/</a></li>
+			            <li><a href="http://ofps.oreilly.com/titles/9780596155957/">http://ofps.oreilly.com/titles/9780596155957/</a></li>
+                        <li><a href="http://www.atomicscala.com/free-sample">http://www.atomicscala.com/free-sample</a></li>
+                        <li><a href="http://twitter.github.io/scala_school/index.html">http://twitter.github.io/scala_school/index.html</a></li>
+                    </ul>
+                </section>
+            </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme || 'beige', // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
