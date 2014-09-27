@@ -24,6 +24,15 @@ public class Exercise10 {
 
         final AmazonElasticMapReduce client = Clients.getEmrClient();
 
-        //TODO
+        final ListInstanceGroupsResult result = client.listInstanceGroups(new ListInstanceGroupsRequest()
+                .withClusterId(clusterId));
+
+        final List<InstanceGroupModifyConfig> configs = result.getInstanceGroups().stream().filter(
+                group -> InstanceGroupType.valueOf(group.getInstanceGroupType()) != InstanceGroupType.MASTER
+        ).map(
+                group -> new InstanceGroupModifyConfig(group.getId(), group.getRunningInstanceCount() + 1)
+        ).collect(Collectors.toList());
+
+        client.modifyInstanceGroups(new ModifyInstanceGroupsRequest(configs));
     }
 }

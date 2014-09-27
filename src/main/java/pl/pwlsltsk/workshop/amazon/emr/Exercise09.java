@@ -22,6 +22,16 @@ public class Exercise09 {
         final String selectQuery = "select substr(tdate, 1, 10) as tday, count(*) as tcount from " +
                 "tweets where ttext like 'RT%' group by tday order by tcount desc limit 30";
 
-        //TODO
+        try (Connection connection = DriverManager.getConnection(URL)) {
+
+            final Statement statement = connection.createStatement();
+            statement.execute(createQuery);
+
+            final ResultSet set = statement.executeQuery(selectQuery);
+
+            while (set.next()) {
+                System.out.println(set.getString(1) + '\t' + set.getInt(2));
+            }
+        }
     }
 }

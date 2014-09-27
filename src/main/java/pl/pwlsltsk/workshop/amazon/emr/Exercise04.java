@@ -1,9 +1,12 @@
 package pl.pwlsltsk.workshop.amazon.emr;
 
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduce;
+import com.amazonaws.services.elasticmapreduce.model.ClusterState;
+import com.amazonaws.services.elasticmapreduce.model.TerminateJobFlowsRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.pwlsltsk.workshop.util.Clients;
+import pl.pwlsltsk.workshop.util.Monitors;
 
 /**
  * @author pwlsltsk
@@ -24,6 +27,12 @@ public class Exercise04 {
 
         final String clusterId = args[0];
 
-        //TODO
+        final TerminateJobFlowsRequest request = new TerminateJobFlowsRequest().withJobFlowIds(clusterId);
+
+        client.terminateJobFlows(request);
+
+        log.info("Terminating cluster " + clusterId);
+
+        Monitors.monitorClusterState(clusterId, ClusterState.TERMINATED);
     }
 }

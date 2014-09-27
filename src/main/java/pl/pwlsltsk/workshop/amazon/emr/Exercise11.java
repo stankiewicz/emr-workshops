@@ -1,7 +1,11 @@
 package pl.pwlsltsk.workshop.amazon.emr;
 
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduce;
+import com.amazonaws.services.elasticmapreduce.model.*;
 import pl.pwlsltsk.workshop.util.Clients;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author pwlsltsk
@@ -20,6 +24,15 @@ public class Exercise11 {
 
         final AmazonElasticMapReduce client = Clients.getEmrClient();
 
-        //TODO
+        final ListInstanceGroupsResult result = client.listInstanceGroups(new ListInstanceGroupsRequest()
+                .withClusterId(clusterId));
+
+        final List<InstanceGroupModifyConfig> configs = result.getInstanceGroups().stream().filter(
+                group -> InstanceGroupType.valueOf(group.getInstanceGroupType()) == InstanceGroupType.TASK
+        ).map(
+                group -> new InstanceGroupModifyConfig(group.getId(), group.getRunningInstanceCount() - 1)
+        ).collect(Collectors.toList());
+
+        client.modifyInstanceGroups(new ModifyInstanceGroupsRequest(configs));
     }
 }

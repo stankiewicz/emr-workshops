@@ -1,6 +1,8 @@
 package pl.pwlsltsk.workshop.amazon.emr;
 
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduce;
+import com.amazonaws.services.elasticmapreduce.model.DescribeClusterRequest;
+import com.amazonaws.services.elasticmapreduce.model.DescribeClusterResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.pwlsltsk.workshop.util.Clients;
@@ -22,6 +24,9 @@ public class Exercise02 {
 
         final AmazonElasticMapReduce client = Clients.getEmrClient();
 
-        //TODO
+        final DescribeClusterResult describeClusterResult = client.describeCluster(
+                new DescribeClusterRequest().withClusterId(args[0]));
+
+        log.info(describeClusterResult.getCluster().toString());
     }
 }
